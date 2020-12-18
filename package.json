@@ -16,6 +16,13 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-do-expressions": "^7.10.1",
+    "@babel/plugin-proposal-export-default-from": "^7.10.1",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.1",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
+    "@babel/plugin-proposal-throw-expressions": "^7.10.1",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@vue/component-compiler-utils": "^3.0.0",
