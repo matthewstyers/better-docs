@@ -2,8 +2,8 @@ const DOCS_COMMAND = process.env.DOCS_COMMAND || 'yarn docs'
 const DOCS_OUTPUT = process.env.DOCS_OUTPUT || '../docs'
 
 const gulp = require('gulp')
-const sass = require('gulp-sass')
-const autoprefixer = require('gulp-autoprefixer')
+// const sass = require('gulp-sass')
+// const autoprefixer = require('gulp-autoprefixer')
 const run = require('gulp-run')
 const babel = require('gulp-babel')
 const uglify = require('gulp-uglify')
@@ -12,15 +12,15 @@ const concat = require('gulp-concat')
 const path = require('path')
 const browserSync = require('browser-sync').create()
 
-gulp.task('sass', () => {
-  gulp.src('styles/app.sass')
-    .pipe(sass({
-      outputStyle: 'compressed',
-    }))
-    .pipe(autoprefixer())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('static/styles'))
-})
+// gulp.task('sass', () => {
+//   gulp.src('styles/app.sass')
+//     .pipe(sass({
+//       outputStyle: 'compressed',
+//     }))
+//     .pipe(autoprefixer())
+//     .pipe(rename({ suffix: '.min' }))
+//     .pipe(gulp.dest('static/styles'))
+// })
 
 gulp.task('js', () => {
   gulp.src(path.join('scripts/', '*.js'), { base: 'app' })
