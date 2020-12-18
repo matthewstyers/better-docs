@@ -5,10 +5,10 @@ const path = require('path')[process.platform === 'win32' ? 'win32' : 'posix']
 const VUE_WRAPPER = process.env.IS_DEV ? 'src/vue-wrapper.js' : 'lib/vue-wrapper.js'
 const REACT_WRAPPER = process.env.IS_DEV ? 'src/react-wrapper.jsx' : 'lib/react-wrapper.js'
 
-const pathCrossEnv = (path) =>
-  process.platform !== 'win32' ? path : path.replace(/\\/g, '/')
+const pathCrossEnv = (pth) =>
+  process.platform !== 'win32' ? pth : pth.replace(/\\/g, '/')
 
-module.exports = function bundle (Components, out, config) {
+module.exports = function bundle(Components, out, config) {
   if (!Components.length) {
     return
   }
@@ -55,7 +55,7 @@ module.exports = function bundle (Components, out, config) {
     if(config.betterDocs.component.wrapper) {
       const absolute = path.resolve(config.betterDocs.component.wrapper)
       const relative = pathCrossEnv(path.relative(absoluteOut, absolute))
-      init +=`
+      init += `
       import _CustomWrapper from '${relative}';\n
       window._CustomWrapper = _CustomWrapper;\n
       `
@@ -85,7 +85,7 @@ module.exports = function bundle (Components, out, config) {
   try {
     execSync(cmd)
   } catch (error) {
-    if(error.output && error.output.length){
+    if(error.output && error.output.length) {
       console.log(error.output[1].toString())
     }
     throw error
