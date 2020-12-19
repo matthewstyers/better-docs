@@ -1,7 +1,6 @@
-<?js 
+<?js
   self = this
 ?>
-
 <div class="top-nav">
     <div class="inner">
         <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
@@ -10,19 +9,19 @@
             <span aria-hidden="true"></span>
         </a>
         <div class="logo">
-            <?js if(betterDocs.logo) { ?> 
+            <?js if(betterDocs.logo) { ?>
                 <a class="image" href="index.html">
                     <img src="<?js= betterDocs.logo ?>" alt="logo">
                 </a>
             <?js } ?>
-            <?js if(betterDocs.name) { ?> 
+            <?js if(betterDocs.name) { ?>
                 <a href="index.html">
                     <h1 class="navbar-item"><?js= betterDocs.name?></h1>
                 </a>
             <?js } ?>
         </div>
         <div class="menu">
-            <?js if(betterDocs.navButtons && betterDocs.navButtons.length) { ?> 
+            <?js if(betterDocs.navButtons && betterDocs.navButtons.length) { ?>
                 <div class="top-buttons">
                     <?js betterDocs.navButtons.forEach(function(nav) { ?>
                         <a  href="<?js= nav.href ?>"
@@ -38,13 +37,11 @@
                 <a
                     href="<?js= betterDocs.landing ? 'docs.html' : 'index.html' ?>"
                     class="link"
-                >
-                    API Documentation
-                </a>
+                >API</a>
                 <?js if (this.tutorials.length) { ?>
                 <div class="dropdown is-hoverable is-right">
                     <a class="dropdown-trigger link">
-                        Tutorials
+                          <?js= betterDocs.tutorials.title ?>
                         <i class="fas fa-chevron-down fa-xs"></i>
                     </a>
                     <div class="dropdown-menu">
@@ -58,7 +55,7 @@
                     </div>
                 </div>
                 <?js } ?>
-                <?js if(betterDocs.navLinks && betterDocs.navLinks.length) { ?> 
+                <?js if(betterDocs.navLinks && betterDocs.navLinks.length) { ?>
                     <?js betterDocs.navLinks.forEach(function(link) { ?>
                         <a
                             class="link user-link <?js= link.className ? link.className : '' ?>"
@@ -68,7 +65,7 @@
                         </a>
                     <?js }) ?>
                 <?js } ?>
-                
+
             </div>
         </div>
     </div>
