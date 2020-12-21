@@ -32,6 +32,11 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     'quotes': ['error', 'single'],
     'import/no-unresolved': 'off',
+    'no-unused-vars': [1, {
+      args: 'after-used',
+      ignoreRestSiblings: true,
+      vars: 'local',
+    }],
     'no-underscore-dangle': 'off',
     'guard-for-in': 'off',
     'no-restricted-syntax': 'off',

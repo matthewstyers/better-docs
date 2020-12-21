@@ -1,0 +1,11 @@
+<?js
+  var data = obj;
+  var self = this;
+?>
+<div class="name-tags">
+  <?js data.forEach(function(name, i) { ?>
+    <div class="name-tag <?js= name.toLowerCase() ?>">
+      <?js= self.linkto(name, self.htmlsafe(name)) ?>
+    </div>
+  <?js }); ?>
+</div>

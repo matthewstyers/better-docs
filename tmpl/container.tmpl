@@ -87,7 +87,7 @@
     <?js } ?>
     </div>
     <?js if (doc.component) { ?>
-        <?js if (doc.component.slots && doc.component.slots.length) { ?>  
+        <?js if (doc.component.slots && doc.component.slots.length) { ?>
             <div class='vertical-section'>
                 <h1>Slots</h1>
                 <div class="members">
@@ -169,6 +169,51 @@
     <?js } ?>
 
     <?js
+        var hocs = self.find({kind: 'hoc', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+        if (hocs && hocs.length && hocs.forEach) {
+            hocs = hocs.filter(function(m) { return m.access !== 'private'; });
+    ?>
+        <div class='vertical-section'>
+            <h1>Hooks</h1>
+            <div class="members">
+            <?js hocs.forEach(function(m) { ?>
+                <div class="member"><?js= self.partial('method.tmpl', m) ?></div>
+            <?js }); ?>
+            </div>
+        </div>
+    <?js } ?>
+
+    <?js
+        var components = self.find({kind: 'component', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+        if (components && components.length && components.forEach) {
+            components = components.filter(function(m) { return m.access !== 'private'; });
+    ?>
+        <div class='vertical-section'>
+            <h1>Components</h1>
+            <div class="members">
+            <?js components.forEach(function(m) { ?>
+                <div class="member"><?js= self.partial('method.tmpl', m) ?></div>
+            <?js }); ?>
+            </div>
+        </div>
+    <?js } ?>
+
+    <?js
+        var hooks = self.find({kind: 'hook', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+        if (hooks && hooks.length && hooks.forEach) {
+            hooks = hooks.filter(function(m) { return m.access !== 'private'; });
+    ?>
+        <div class='vertical-section'>
+            <h1>Hooks</h1>
+            <div class="members">
+            <?js hooks.forEach(function(m) { ?>
+                <div class="member"><?js= self.partial('method.tmpl', m) ?></div>
+            <?js }); ?>
+            </div>
+        </div>
+    <?js } ?>
+
+    <?js
         var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
 
         // symbols that are assigned to module.exports are not globals, even though they're not a memberof anything
@@ -185,7 +230,7 @@
             <h1>Members</h1>
             <div class="members">
             <?js members.forEach(function(p) { ?>
-                <div class="member"><?js= self.partial('members.tmpl', p) ?></div>
+                <div class="member"><?js= self.partial('member.tmpl', p) ?></div>
             <?js }); ?>
             </div>
         </div>
@@ -223,7 +268,7 @@
                 }
                 else {
             ?>
-                <div class="member"><?js= self.partial('members.tmpl', e) ?></div>
+                <div class="member"><?js= self.partial('member.tmpl', e) ?></div>
             <?js
                 }
             }); ?>

@@ -2,12 +2,7 @@
 var data = obj;
 var self = this;
 ?>
-<?js if (data.type && data.type.names) {?>
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        <?js= self.partial('type.tmpl', data.type.names) ?>
-    </span>
-<?js } ?>
+<?js if (data.type && data.type.names) {?><?js= self.partial('name-tags.tmpl', data.type.names) ?><?js } ?>
 <h4 class="name" id="<?js= id ?>">
     <?js= self.partial('name-link.tmpl', {id: id}) ?>
     <?js if (data.rawAttribs && data.rawAttribs.length) {?>

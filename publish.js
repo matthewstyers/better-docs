@@ -6,7 +6,7 @@ const helper = require('jsdoc/util/templateHelper');
 const logger = require('jsdoc/util/logger');
 const path = require('jsdoc/path');
 const taffy = require('taffydb').taffy;
-const template = require('jsdoc/template');
+const { Template } = require('./utils');
 const util = require('util');
 const _ = require('lodash');
 const { singular } = require('pluralize');
@@ -44,7 +44,7 @@ function getAncestorLinks(doclet) {
 function hashToLink(doclet, hash) {
   let url;
 
-  if ( !/^(#.+)/.test(hash) ) {
+  if (!/^(#.+)/.test(hash)) {
     return hash;
   }
 
@@ -53,18 +53,18 @@ function hashToLink(doclet, hash) {
 
   return '<a href="' + url + '">' + hash + '</a>';
 }
-
+const getsSignature = ['function', 'class', 'hoc', 'hook', 'component'];
 function needsSignature(doclet) {
   let needsSig = false;
 
   // function and class definitions always get a signature
-  if (doclet.kind === 'function' || doclet.kind === 'class') {
+  if (_.includes(getsSignature, doclet.kind)) {
     needsSig = true;
     // typedefs that contain functions get a signature, too
   } else if (doclet.kind === 'typedef' && doclet.type && doclet.type.names &&
         doclet.type.names.length) {
     for (let i = 0, l = doclet.type.names.length; i < l; i++) {
-      if (doclet.type.names[i].toLowerCase() === 'function') {
+      if (_.includes(getsSignature, doclet.type.names[i].toLowerCase())) {
         needsSig = true;
         break;
       }
@@ -104,8 +104,8 @@ function updateItemName(item) {
   }
 
   if (attributes && attributes.length) {
-    itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName,
-      attributes.join(', ') );
+    itemName = util.format('%s<span class="signature-attributes">%s</span>', itemName,
+      attributes.join(', '));
   }
 
   return itemName;
@@ -122,7 +122,7 @@ function buildItemTypeStrings(item) {
 
   if (item && item.type && item.type.names) {
     item.type.names.forEach(function(name) {
-      types.push( linkto(name, htmlsafe(name)) );
+      types.push(linkto(name, htmlsafe(name)));
     });
   }
 
@@ -133,7 +133,7 @@ function buildAttribsString(attribs) {
   let attribsString = '';
 
   if (attribs && attribs.length) {
-    attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
+    attribsString = htmlsafe(util.format('(%s) ', attribs.join(', ')));
   }
 
   return attribsString;
@@ -143,7 +143,7 @@ function addNonParamAttributes(items) {
   let types = [];
 
   items.forEach(function(item) {
-    types = types.concat( buildItemTypeStrings(item) );
+    types = types.concat(buildItemTypeStrings(item));
   });
 
   return types;
@@ -152,7 +152,7 @@ function addNonParamAttributes(items) {
 function addSignatureParams(f) {
   const params = f.params ? addParamAttributes(f.params) : [];
 
-  f.signature = util.format( '%s(%s)', (f.signature || ''), params.join(', ') );
+  f.signature = util.format('%s(%s)', (f.signature || ''), params.join(', '));
 }
 
 function addSignatureReturns(f) {
@@ -181,7 +181,7 @@ function addSignatureReturns(f) {
     returnTypes = addNonParamAttributes(source);
   }
   if (returnTypes.length) {
-    returnTypesString = util.format( ' &rarr; %s{%s}', attribsString, returnTypes.join('|') );
+    returnTypesString = util.format(' &rarr; %s{%s}', attribsString, returnTypes.join('|'));
   }
 
   f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
@@ -332,9 +332,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
       subCategoryItems.forEach(function(item) {
         let displayName;
 
-        if ( !hasOwnProp.call(item, 'longname') ) {
+        if (!hasOwnProp.call(item, 'longname')) {
           itemsNav += '<li>' + linktoFn('', item.name) + '</li>';
-        } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+        } else if (!hasOwnProp.call(itemsSeen, item.longname)) {
           if (env.conf.templates.default.useLongnameInNav) {
             displayName = item.longname;
           } else {
@@ -410,7 +410,7 @@ function buildGroupNav(members, title, betterDocs) {
     globalNav = '';
 
     members.globals.forEach(function(g) {
-      if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
+      if (g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname)) {
         globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
       }
       seen[g.longname] = true;
@@ -515,14 +515,14 @@ exports.publish = function(taffyData, opts, tutorials) {
   }
 
   // console.log(conf.betterDocs)
-  view = new template.Template( path.join(templatePath, 'tmpl') );
+  view = new Template(path.join(templatePath, 'tmpl'));
 
 
 
   // set up templating
   view.layout = conf.default.layoutFile ?
     path.getResourcePath(path.dirname(conf.default.layoutFile),
-      path.basename(conf.default.layoutFile) ) :
+      path.basename(conf.default.layoutFile)) :
     'layout.tmpl';
 
   // set up tutorials for helper
@@ -573,16 +573,16 @@ exports.publish = function(taffyData, opts, tutorials) {
   });
 
   // update outdir if necessary, then create outdir
-  const packageInfo = ( find({ kind: 'package' }) || [] )[0];
+  const packageInfo = (find({ kind: 'package' }) || [])[0];
   if (packageInfo && packageInfo.name) {
-    outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
+    outdir = path.join(outdir, packageInfo.name, (packageInfo.version || ''));
   }
   fs.mkPath(outdir);
 
 
 
   staticFiles.forEach(function(fileName) {
-    const toDir = fs.toDir( fileName.replace(fromDir, outdir) );
+    const toDir = fs.toDir(fileName.replace(fromDir, outdir));
 
     fs.mkPath(toDir);
     fs.copyFileSync(fileName, toDir);
@@ -606,7 +606,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
       extraStaticFiles.forEach(function(fileName) {
         const sourcePath = fs.toDir(filePath);
-        const toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
+        const toDir = fs.toDir(fileName.replace(sourcePath, outdir));
 
         fs.mkPath(toDir);
         fs.copyFileSync(fileName, toDir);
@@ -642,7 +642,7 @@ exports.publish = function(taffyData, opts, tutorials) {
       doclet.id = doclet.name;
     }
 
-    if ( needsSignature(doclet) ) {
+    if (needsSignature(doclet)) {
       addSignatureParams(doclet);
       addSignatureReturns(doclet);
       addAttribs(doclet);
@@ -709,7 +709,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   view.tutorialsNav = buildNav(members, ['tutorials'], conf.betterDocs);
 
   bundler(members.components, outdir, conf);
-  attachModuleSymbols( find({ longname: { left: 'module:' }}), members.modules );
+  attachModuleSymbols(find({ longname: { left: 'module:' }}), members.modules);
 
   // generate the pretty-printed source files first so other pages can link to them
   if (outputSourceFiles) {
