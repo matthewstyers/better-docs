@@ -1,4 +1,4 @@
-<?js
+<js
 var betterDocs
 
 if(env.conf.templates && env.conf.templates.betterDocs) {
@@ -11,13 +11,13 @@ var self = this
 
 <!DOCTYPE html>
 <html lang="en">
-<?js= this.partial('head.tmpl', { betterDocs, title }) ?>
+<js= this.partial('head.tmpl', { betterDocs, title }) ?>
 
 <body class="landing">
     <div id="stickyNavbarOverlay"></div>
-      <?js= this.partial('topnav.tmpl', { betterDocs }) ?>
+      <js= this.partial('topnav.tmpl', { betterDocs }) ?>
     <div id="main">
-      <?js= content ?>
+      <js= content ?>
     </div>
 
 <script src="scripts/app.min.js"></script>

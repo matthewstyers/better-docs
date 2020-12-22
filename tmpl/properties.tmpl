@@ -1,4 +1,4 @@
-<?js
+<js
     var data = obj;
     var props = data.subprops || data.properties;
 
@@ -43,11 +43,11 @@
                 if (subprop.optional || subprop.nullable) {
                     props.hasAttributes = true;
                 }
-        
+
                 if (subprop.name) {
                     props.hasName = true;
                 }
-        
+
                 if (typeof subprop.defaultvalue !== 'undefined' && !data.isEnum) {
                     props.hasDefault = true;
                 }
@@ -59,26 +59,26 @@
     <table class="props table">
         <thead>
         <tr>
-            <?js if (props.hasName) {?>
+            <js if (props.hasName) {?>
             <th>Name</th>
-            <?js } ?>
+            <js } ?>
 
             <th>Type</th>
 
-            <?js if (props.hasAttributes) {?>
+            <js if (props.hasAttributes) {?>
             <th>Attributes</th>
-            <?js } ?>
+            <js } ?>
 
-            <?js if (props.hasDefault) {?>
+            <js if (props.hasDefault) {?>
             <th>Default</th>
-            <?js } ?>
+            <js } ?>
 
             <th class="last">Description</th>
         </tr>
         </thead>
 
         <tbody>
-        <?js
+        <js
             var self = this;
             var level = 0;
             props.forEach(function(prop) {
@@ -89,8 +89,13 @@
                     level: level
                 }
         ?>
-            <?js= self.partial('property.tmpl', propData) ?>
-        <?js }); ?>
+            <js= self.partial('property.tmpl', propData) ?>
+        <js }); ?>
         </tbody>
     </table>
+    <js if (props.hasAttributes) { ?>
+    <caption>
+      <strong>Attributes:</strong>&nbsp; &#128680; : Required, &#10062; : Nullable
+    </caption>
+    <js } ?>
 </div>

@@ -1,45 +1,44 @@
-<?js
+<js
     var data = obj;
     var props = data.props;
     var prop = data.prop;
     var level = data.level;
     var self = this;
 ?>
-<tr class="deep-level-<?js= level ?>">
-    <?js if (props.hasName) {?>
-        <td class="name"><code><?js= prop.name ?></code></td>
-    <?js } ?>
+<tr class="deep-level-<js= level ?>">
+    <js if (props.hasName) {?>
+        <td class="name"><code><js= prop.name ?></code></td>
+    <js } ?>
 
     <td class="type">
-    <?js if (prop.type && prop.type.names) {?>
-        <?js= self.partial('type.tmpl', prop.type.names) ?>
-    <?js } ?>
+    <js if (prop.type && prop.type.names) {?>
+        <js= self.partial('type.tmpl', prop.type.names) ?>
+    <js } ?>
     </td>
 
-    <?js if (props.hasAttributes) {?>
-        <td class="attributes">
-        <?js if (prop.optional) { ?>
-            &lt;optional><br>
-        <?js } ?>
+    <js if (props.hasAttributes) {?>
+      <td class="attributes">
+        <js if (!prop.optional) { ?>
+          <div class='attr required'>&#128680;</div>
+        <js } ?>
+        <js if (prop.nullable) { ?>
+          <div class='attr nullable'>&#10062;</div>
+        <js } ?>
+      </td>
+    <js } ?>
 
-        <?js if (prop.nullable) { ?>
-            &lt;nullable><br>
-        <?js } ?>
-        </td>
-    <?js } ?>
-
-    <?js if (props.hasDefault) {?>
+    <js if (props.hasDefault) {?>
         <td class="default">
-        <?js if (typeof prop.defaultvalue !== 'undefined') { ?>
-            <?js= self.htmlsafe(prop.defaultvalue) ?>
-        <?js } ?>
+        <js if (typeof prop.defaultvalue !== 'undefined') { ?>
+            <js= self.htmlsafe(prop.defaultvalue) ?>
+        <js } ?>
         </td>
-    <?js } ?>
+    <js } ?>
 
-    <td class="description last"><?js= prop.description ?></td>
+    <td class="description last"><js= prop.description ?></td>
 </tr>
-<?js if (prop.subprops) { ?>
-  <?js
+<js if (prop.subprops) { ?>
+  <js
       var self = this;
       prop.subprops.forEach(function(subprop) {
           if (!subprop) { return; }
@@ -49,6 +48,6 @@
               level: level + 1,
           }
   ?>
-      <?js= self.partial('property.tmpl', propData) ?>
-  <?js }); ?>
-<?js } ?>
+      <js= self.partial('property.tmpl', propData) ?>
+  <js }); ?>
+<js } ?>

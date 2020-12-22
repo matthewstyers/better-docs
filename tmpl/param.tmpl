@@ -18,19 +18,17 @@
   </td>
 
   <js if (params.hasAttributes) {?>
-      <td class="attributes">
-      <js if (param.optional) { ?>
-          &lt;optional><br>
+    <td class="attributes">
+      <js if (!param.optional) { ?>
+        <div class='attr required'>&#128680;</div>
       <js } ?>
-
+      <js if (param.repeatable) { ?>
+        <div class='attr repeatable'>&#128260;</div>
+      <js } ?>
       <js if (param.nullable) { ?>
-          &lt;nullable><br>
+        <div class='attr nullable'>&#10062;</div>
       <js } ?>
-
-      <js if (param.variable) { ?>
-          &lt;repeatable><br>
-      <js } ?>
-      </td>
+    </td>
   <js } ?>
 
   <js if (params.hasDefault) {?>
@@ -44,7 +42,6 @@
   <td class="description last"><js= param.description ?></td>
 </tr>
 <js if (param.subparams) { ?>
-
   <js
       var self = this;
       param.subparams.forEach(function(subparam) {
