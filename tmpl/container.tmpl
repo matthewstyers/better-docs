@@ -216,7 +216,7 @@
     <js
         var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
 
-        // symbols that are assigned to module.exports are not globals, even though they're not a memberof anything
+       /* symbols that are assigned to module.exports are not globals, even though theyy are  not a memberof anything */
         if (isGlobalPage && members && members.length && members.forEach) {
             members = members.filter(function(m) {
                 return m.longname
