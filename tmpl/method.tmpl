@@ -5,7 +5,7 @@ var self = this;
 <js if (data.type && data.type.names) {?><js= self.partial('name-tags.tmpl', data.type.names) ?><js } ?>
 <js if (data.kind !== 'module' && !data.hideconstructor) { ?>
     <js if (data.kind !== 'namespace') { ?>
-    <h4 class="name" id="<js= id ?>">
+    <h4 class="name" id="<js= id ?>" data-isnative="<js= data.isNative ?>">
         <js= self.partial('name-link.tmpl', {id: id}) ?>
         <js if (data.rawAttribs && data.rawAttribs.length) {?>
             <js data.rawAttribs.forEach(function(attrib) { ?>

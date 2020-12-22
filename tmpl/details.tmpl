@@ -144,7 +144,7 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
 
     <js if (data.meta && self.outputSourceFiles) {?>
         <p class="tag-source">
-            <js= self.linkto(meta.shortpath, 'View Source', 'button') ?>
+            <js= self.linkto(meta.shortpath, 'Src', 'button') ?>
             <span>
                 <js= self.linkto(meta.shortpath) ?>, <js= self.linkto(meta.shortpath, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
             </span>

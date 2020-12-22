@@ -1,78 +1,78 @@
-const OFFSET = 150
+const OFFSET = 150;
 
 $().ready(() => {
-  const wrapper = $('#side-nav')
+  const wrapper = $('#side-nav');
 
-  /**
-   * @type  {Array<{link: El, offset: number}>}
-   */
-  const links = []
+  const links = [];
 
   if (!$('.vertical-section').length) {
-    wrapper.hide()
+    wrapper.hide();
   }
 
   $('.vertical-section').each((i, el) => {
-    const section = $(el)
-    const sectionName = section.find('> h1').text()
+    const section = $(el);
+    const sectionName = section.find('> h1').text();
     if (sectionName) {
-      wrapper.append($('<h3/>').text(sectionName))
-      const list = $('<ul></ul>')
-      section.find('.members h4.name').each((i, el) => {
-        const navLink = $(el)
-        const name = navLink.find('.code-name')
-          .clone().children().remove().end().text()
-        const href = navLink.find('a').attr('href')
-        const link = $(`<a href="${href}" />`).text(name)
-        list.append($('<li></li>').append(link))
-        links.push({ link, offset: navLink.offset().top})
-      })
-      wrapper.append(list)
+      wrapper.append($('<h3/>').text(sectionName));
+      const list = $('<ul></ul>');
+      section.find('.members h4.name').each((_i, _el) => {
+        const navLink = $(_el);
+        let name = navLink.find('.code-name')
+          .clone().children().remove().end().text();
+        const isNative = navLink.attr('data-isnative');
+        if (isNative === 'true') name += ' (Native)';
+        const href = navLink.find('a').attr('href');
+        const link = $(`<a href="${href}" />`).text(name);
+        list.append($('<li></li>').append(link));
+        links.push({ link, offset: navLink.offset().top });
+      });
+      wrapper.append(list);
+    } else {
+      section.find('.members h4.name').each((_i, _el) => {
+        const navLink = $(_el);
+        let name = navLink.find('.code-name')
+          .clone().children().remove().end().text();
+        const isNative = navLink.attr('data-isnative');
+        if (isNative === 'true') name += ' (Native)';
+        const href = navLink.find('a').attr('href');
+        const link = $(`<a href="${href}" />`).text(name);
+        wrapper.append(link);
+        links.push({ link, offset: navLink.offset().top });
+      });
     }
-    else {
-      section.find('.members h4.name').each((i, el) => {
-        const navLink = $(el)
-        const name = navLink.find('.code-name')
-          .clone().children().remove().end().text()
-        const href = navLink.find('a').attr('href')
-        const link = $(`<a href="${href}" />`).text(name)
-        wrapper.append(link)
-        links.push({ link, offset: navLink.offset().top})
-      })
-    }
-  })
+  });
 
   if (!$.trim(wrapper.text())) {
-    return wrapper.hide()
+    return wrapper.hide();
   }
 
-  const core = $('#main-content-wrapper')
-  
+  const core = $('#main-content-wrapper');
+
   const selectOnScroll = () => {
-    const position = core.scrollTop()
-    let activeSet = false
-    for (let index = (links.length-1); index >= 0; index--) {
-      const link = links[index]
-      link.link.removeClass('is-active')
+    const position = core.scrollTop();
+    let activeSet = false;
+    for (let index = (links.length - 1); index >= 0; index--) {
+      const link = links[index];
+      link.link.removeClass('is-active');
       if ((position + OFFSET) >= link.offset) {
         if (!activeSet) {
-          link.link.addClass('is-active')
-          activeSet = true
+          link.link.addClass('is-active');
+          activeSet = true;
         } else {
-          link.link.addClass('is-past')
+          link.link.addClass('is-past');
         }
       } else {
-        link.link.removeClass('is-past')
+        link.link.removeClass('is-past');
       }
     }
-  }
-  core.on('scroll', selectOnScroll)
+  };
+  core.on('scroll', selectOnScroll);
 
-  selectOnScroll()
+  selectOnScroll();
 
   links.forEach(link => {
     link.link.click(() => {
-      core.animate({ scrollTop: link.offset - OFFSET + 1 }, 500)
-    })
-  })
-})
+      core.animate({ scrollTop: link.offset - OFFSET + 1 }, 500);
+    });
+  });
+});

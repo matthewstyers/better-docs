@@ -64,7 +64,7 @@ exports.handlers = {
         if (!_.isArray(doclet.type.names)) doclet.type.names = [];
 
         /* add isNative flag */
-        doclet.isNative = true;
+        isNative = true;
 
         /* insert name */
         doclet.type.names.unshift(getName(title));
@@ -72,5 +72,7 @@ exports.handlers = {
       default: break;
       }
     });
+
+    doclet.isNative = isNative;
   }
 };
