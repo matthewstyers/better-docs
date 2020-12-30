@@ -15,17 +15,15 @@ const resolveAuthorLinks = helper.resolveAuthorLinks;
 const {
   Template,
   addAttrs,
-  addSignatureParams,
-  addSignatureReturns,
   addSignatureTypes,
   attachModuleSymbols,
   buildNav,
   createGenerate,
   convertHashToLink,
   generateSourceFiles,
+  getSignature,
   getPathFromDoclet,
   getTutorialLink,
-  needsSignature,
   shortenPaths,
 } = require('./utils');
 
@@ -96,7 +94,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   helper.setTutorials(tutorials);
 
   data = helper.prune(data);
-  data.sort('longname, version, since');
+  data.sort('name, longname, version, since');
   helper.addEventListeners(data);
 
   data().each(function(doclet) {
@@ -198,15 +196,10 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     if (url.indexOf('#') > -1) {
       doclet.id = helper.longnameToUrl[doclet.longname].split(/#/).pop();
-    } else {
-      doclet.id = doclet.name;
-    }
+    } else doclet.id = doclet.name;
 
-    if (needsSignature(doclet)) {
-      addSignatureParams(doclet);
-      addSignatureReturns(doclet);
-      addAttrs(doclet);
-    }
+    /* add signture, if any */
+    getSignature(doclet);
   });
 
   // do this after the urls have all been generated
@@ -388,8 +381,9 @@ exports.publish = function(taffyData, opts, tutorials) {
     view.layout = 'landing.tmpl';
     let html = view.render('content.tmpl', landingPageData);
 
-    // yes, you can use {@link} in tutorials too!
-    html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    // allow {@link} in tutorials
+    // turn {@link foo} into <a href="foodoc.html">foo</a>
+    html = helper.resolveLinks(html);
 
     fs.writeFileSync(homePath, html, 'utf8');
   }

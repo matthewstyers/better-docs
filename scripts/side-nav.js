@@ -18,7 +18,7 @@ $().ready(() => {
       section.find('.members h4.name').each((_i, _el) => {
         const navLink = $(_el);
         let name = navLink.find('.code-name')
-          .clone().children().remove().end().text();
+          .clone().children().remove().end().text().trim();
         const isNative = navLink.attr('data-isnative');
         if (isNative === 'true') name += ' (Native)';
         const href = navLink.find('a').attr('href');
