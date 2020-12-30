@@ -33,7 +33,7 @@ ${memo.length ? ', ' : ''}${memo}`;
 
   /* format for placement in component-style signature */
   let children = _.find(doclet.properties, { name: 'children' });
-  if (doclet.name === 'Collapse') console.log(children);
+  // if (doclet.name === 'Collapse') console.log(children);
   if (children) {
     /* convert to type name */
     children = `\
