@@ -1,8 +1,7 @@
-const util = require('util');
 const addParamAttributes = require('./addParamAttributes');
+const _ = require('lodash');
 
-module.exports = function addSignatureParams(f) {
-  const params = f.params ? addParamAttributes(f.params) : [];
-
-  f.signature = util.format('%s(%s)', (f.signature || ''), params.join(', '));
+module.exports = function addSignatureParams(doclet) {
+  const params = doclet.params ? addParamAttributes(doclet.params) : [];
+  doclet.signature = `${doclet.signature || ''}(${_.join(params, ', ')})`;
 };

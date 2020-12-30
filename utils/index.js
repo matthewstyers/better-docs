@@ -15,6 +15,7 @@ module.exports = {
   convertHashToLink: require('./convertHashToLink'),
   generateSourceFiles: require('./generateSourceFiles'),
   getPathFromDoclet: require('./getPathFromDoclet'),
+  getSignature: require('./getSignature'),
   getTutorialLink: require('./getTutorialLink'),
   linkToExternal: require('./linktoExternal'),
   needsSignature: require('./needsSignature'),

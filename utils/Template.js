@@ -19,9 +19,9 @@ module.exports = class Template {
     this.cache = {};
     // override default template tag settings
     this.settings = {
-      escape: /<(?:\?js|js)~([\s\S]+?)\?>/g,
-      interpolate: /<(?:\?js|js)=([\s\S]+?)\?>/g,
-      evaluate: /<(?:\?js|js)([\s\S]+?)\?>/g,
+      escape: /<(?:\?js|js|[x])~([\s\S]+?)\?>/g, /* first */
+      interpolate: /<(?:\?js|js|[x])=([\s\S]+?)\?>/g, /* second */
+      evaluate: /<(?:\?js|js|[x])([\s\S]+?)\?>/g, /* last */
     };
   }
 
