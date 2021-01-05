@@ -257,7 +257,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   view.outputSourceFiles = outputSourceFiles;
 
   // once for all
-  view.nav = buildNav(members, null, conf.betterDocs);
+  view.nav = buildNav(members, conf.betterDocs.navTypes, conf.betterDocs);
 
   view.tutorialsNav = buildNav(members, ['tutorials'], conf.betterDocs);
 
