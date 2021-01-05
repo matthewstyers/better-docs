@@ -19,7 +19,7 @@
 
   <js if (params.hasAttributes) {?>
     <td class="attributes">
-      <js if (!param.optional) { ?>
+      <js if (param.required) { ?>
         <div class='attr required'>&#128680;</div>
       <js } ?>
       <js if (param.repeatable) { ?>

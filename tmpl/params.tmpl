@@ -20,7 +20,7 @@
                 return;
             }
 
-            if ( paramRegExp.test(param.name) ) {
+            if (paramRegExp.test(param.name) ) {
                 param.name = RegExp.$1;
                 parentParam.subparams = parentParam.subparams || [];
                 parentParam.subparams.push(param);
@@ -42,8 +42,8 @@
 
     params.forEach(function(param) {
         if (!param) { return; }
-
-        if (param.optional || param.nullable || param.variable) {
+        if (!param.optional) param.required = true;
+        if (param.required || param.nullable || param.variable) {
             params.hasAttributes = true;
         }
 
@@ -58,8 +58,9 @@
         if (param.subparams) {
             param.subparams.forEach(function(subparam) {
                 if (!subparam) { return; }
+                if (!subparam.optional) subparam.required = true;
 
-                if (subparam.optional || subparam.nullable || subparam.variable) {
+                if (subparam.required || subparam.nullable || subparam.variable) {
                     params.hasAttributes = true;
                 }
 

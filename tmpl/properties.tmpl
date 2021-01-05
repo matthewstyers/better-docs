@@ -24,8 +24,8 @@
 
     props.forEach(function(prop) {
         if (!prop) { return; }
-
-        if (prop.optional || prop.nullable) {
+        if (!prop.optional) prop.required = true;
+        if (prop.required || prop.nullable) {
             props.hasAttributes = true;
         }
 
@@ -40,7 +40,8 @@
         if (prop.subprops) {
             prop.subprops.forEach(function(subprop) {
                 if (!subprop) { return; }
-                if (subprop.optional || subprop.nullable) {
+                if (!subprop.optional) subprop.required = true;
+                if (subprop.required || subprop.nullable) {
                     props.hasAttributes = true;
                 }
 

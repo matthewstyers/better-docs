@@ -18,7 +18,7 @@
 
     <js if (props.hasAttributes) {?>
       <td class="attributes">
-        <js if (!prop.optional) { ?>
+        <js if (prop.required) { ?>
           <div class='attr required'>&#128680;</div>
         <js } ?>
         <js if (prop.nullable) { ?>
