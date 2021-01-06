@@ -4,12 +4,18 @@ const fs = require('jsdoc/fs');
 const helper = require('jsdoc/util/templateHelper');
 
 module.exports = function createGenerate(outdir, view) {
-  return function generate(title, subtitle, docs, filename, resolveLinks) {
+  return function generate({
+    title,
+    subtitle,
+    docs,
+    filename,
+    resolveLinks = true
+  }) {
     const docData = {
-      env: env,
-      title: title,
-      subtitle: subtitle,
-      docs: docs
+      env,
+      title,
+      subtitle,
+      docs
     };
 
     const outpath = path.join(outdir, filename);

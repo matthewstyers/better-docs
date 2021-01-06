@@ -23,6 +23,11 @@ module.exports = function generateSourceFiles(sourceFiles, encoding, generate) {
       logger.error('Error while generating source file %s: %s', file, e.message);
     }
 
-    generate(sourceFiles[file].shortened, 'Source', [source], sourceOutfile, false);
+    generate({
+      title: sourceFiles[file].shortened,
+      subtitle: 'Source', docs: [source],
+      filename: sourceOutfile,
+      resolveLinks: false
+    });
   });
 };

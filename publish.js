@@ -6,7 +6,7 @@ const path = require('jsdoc/path');
 const taffy = require('taffydb').taffy;
 const _ = require('lodash');
 const { singular } = require('pluralize');
-const bundler = require('./bundler');
+// const bundler = require('./bundler');
 
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;
@@ -26,6 +26,9 @@ const {
   getTutorialLink,
   shortenPaths,
 } = require('./utils');
+const pageTypes = [
+  'modules', 'externals', 'namespaces', 'classes', 'interfaces', 'events', 'mixins', 'globals'
+];
 
 let data;
 let view;
@@ -61,8 +64,10 @@ exports.publish = function(taffyData, opts, tutorials) {
 
   data = taffyData;
   conf.default = conf.default || {};
-  conf.betterDocs = _.defaultsDeep({}, conf.betterDocs || conf['better-docs'], {
-    tutorials: { title: 'Tutorials' }
+  conf.betterDocs = _.defaults({}, conf.betterDocs || conf['better-docs'], {
+    tutorials: { title: 'Tutorials' },
+    navTitles: {},
+    navTypes: pageTypes,
   });
 
   /* structure tutorials conf */
@@ -240,7 +245,6 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
   }
   view.tutorials = members.tutorials;
-  members.components = helper.find(data, { kind: 'class', component: { isUndefined: false }});
   members.classes = helper.find(data, { kind: 'class', component: { isUndefined: true }});
 
   // output pretty-printed source files by default
@@ -261,7 +265,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
   view.tutorialsNav = buildNav(members, ['tutorials'], conf.betterDocs);
 
-  bundler(members.components, outdir, conf);
+  // bundler(members.components, outdir, conf);
   attachModuleSymbols(find({ longname: { left: 'module:' }}), members.modules);
 
   // generate the pretty-printed source files first so other pages can link to them
@@ -269,67 +273,69 @@ exports.publish = function(taffyData, opts, tutorials) {
     generateSourceFiles(sourceFiles, opts.encoding, generate);
   }
 
-  if (members.globals.length) { generate('Global', 'Title', [{ kind: 'globalobj' }], globalUrl); }
+  if (members.globals.length) {
+    generate({
+      title: 'Global',
+      subtitle: 'Title',
+      docs: [{ kind: 'globalobj' }],
+      filename: globalUrl
+    });
+  }
 
   // index page displays information from package.json and lists files
   const files = find({ kind: 'file' });
   const packages = find({ kind: 'package' });
 
-  generate('Home', '',
-    packages.concat(
-      [{
+  generate({
+    title: 'Home',
+    subtitle: '',
+    docs: _.concat([],
+      packages,
+      {
         kind: 'mainpage',
         readme: opts.readme,
         longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
-      }]
-    ).concat(files), indexUrl);
+      },
+      files
+    ),
+    filename: indexUrl
+  });
 
   // set up the lists that we'll use to generate pages
-  const classes = taffy(members.classes);
   const modules = taffy(members.modules);
+  const classes = taffy(members.classes);
   const namespaces = taffy(members.namespaces);
+  const interfaces = taffy(members.interfaces);
   const mixins = taffy(members.mixins);
   const externals = taffy(members.externals);
-  const interfaces = taffy(members.interfaces);
-  const components = taffy(members.components);
 
-  Object.keys(helper.longnameToUrl).forEach(function(longname) {
-    const myClasses = helper.find(classes, { longname: longname });
-    const myExternals = helper.find(externals, { longname: longname });
-    const myInterfaces = helper.find(interfaces, { longname: longname });
-    const myMixins = helper.find(mixins, { longname: longname });
-    const myModules = helper.find(modules, { longname: longname });
-    const myNamespaces = helper.find(namespaces, { longname: longname });
-    const myComponents = helper.find(components, { longname: longname });
 
-    if (myModules.length) {
-      generate(myModules[0].name, 'Module', myModules,  helper.longnameToUrl[longname]);
-    }
+  // const _pageTypes = _.without(pageTypes, 'globals');
+  const taffies = {
+    classes, externals, interfaces, mixins, modules, namespaces
+  };
 
-    if (myClasses.length) {
-      generate(myClasses[0].name, 'Class', myClasses, helper.longnameToUrl[longname]);
-    }
-
-    if (myNamespaces.length) {
-      generate(myNamespaces[0].name, 'Namespace', myNamespaces, helper.longnameToUrl[longname]);
-    }
-
-    if (myMixins.length) {
-      generate(myMixins[0].name, 'Mixin', myMixins, helper.longnameToUrl[longname]);
-    }
-
-    if (myExternals.length) {
-      generate(myExternals[0].name, 'External', myExternals, helper.longnameToUrl[longname]);
-    }
-
-    if (myInterfaces.length) {
-      generate(myInterfaces[0].name, 'Interface', myInterfaces, helper.longnameToUrl[longname]);
-    }
-
-    if (myComponents.length) {
-      generate(myComponents[0].name, 'Components', myComponents, helper.longnameToUrl[longname]);
+  let pageCount = 0;
+  _.each(taffies, (db, type) => {
+    const items = db({ longname: { isString: true }});
+    if (items.count()) {
+      items.each((item) => {
+        const pluralTitle =
+          conf.betterDocs.navTitles[type] || _.startCase(type);
+        const { longname, name } = item;
+        if (_.has(helper.longnameToUrl, [longname])) {
+          generate({
+            title: name,
+            subtitle: singular(pluralTitle),
+            docs: [item],
+            filename: helper.longnameToUrl[longname]
+          });
+          pageCount++;
+        }
+      });
     }
   });
+  console.log(`generated ${pageCount} standard pages`);
 
   // TODO: move the tutorial functions to templateHelper.js
   function generateTutorial(title, subtitle, tutorial, filename) {

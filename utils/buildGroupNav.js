@@ -3,35 +3,32 @@ const buildMemberNav = require('./buildMemberNav');
 const linkToExternal = require('./linkToExternal');
 const getTutorialLink = require('./getTutorialLink');
 const hasOwnProp = Object.prototype.hasOwnProperty;
+const _ = require('lodash');
 
-module.exports = function buildGroupNav(members, title, betterDocs) {
-  let globalNav;
-  const seenTutorials = {};
+module.exports = function buildGroupNav(filtered, title, betterDocs) {
   let nav = '';
   const seen = {};
   nav += '<div class="category">';
-  if (title) {
-    nav += '<h2>' + title + '</h2>';
-  }
-  nav += buildMemberNav(
-    members.tutorials || [],
-    betterDocs.tutorials.title,
-    seenTutorials,
-    (long, name) => getTutorialLink(name)
-  );
-  nav += buildMemberNav(members.modules || [], 'Modules', {}, linkto);
-  nav += buildMemberNav(members.externals || [], 'Externals', seen, linkToExternal);
-  nav += buildMemberNav(members.namespaces || [], 'Namespaces', seen, linkto);
-  nav += buildMemberNav(members.classes || [], 'Classes', seen, linkto);
-  nav += buildMemberNav(members.interfaces || [], 'Interfaces', seen, linkto);
-  nav += buildMemberNav(members.events || [], 'Events', seen, linkto);
-  nav += buildMemberNav(members.mixins || [], 'Mixins', seen, linkto);
-  nav += buildMemberNav(members.components || [], 'Components', seen, linkto);
+  if (title) nav += '<h2>' + title + '</h2>';
 
-  if (members.globals && members.globals.length) {
+  _.each(filtered, (items = [], type) => {
+    const _title = betterDocs.navTitles[type] || _.startCase(type);
+    let to = linkto;
+
+    switch(type) {
+    case 'externals': to = linkToExternal; break;
+    case 'tutorials': to = (long, name) => getTutorialLink(name); break;
+    default: break;
+    }
+
+    nav += buildMemberNav(items, _title, seen, to);
+  });
+
+  let globalNav;
+  if (filtered.globals && filtered.globals.length) {
     globalNav = '';
 
-    members.globals.forEach((g) => {
+    filtered.globals.forEach((g) => {
       if (g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname)) {
         globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
       }
