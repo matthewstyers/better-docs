@@ -53,10 +53,8 @@ ${memo.length ? ', ' : ''}${memo}`;
     : '&nbsp;/&gt;</div>'
   );
 
-
-
   doclet.signature = `<div class='jsx-tag'>&lt;</div>\
-<span class='code-name'>${doclet.name}</span>\
+<span class='code-name'>${_.trim(doclet.name)}</span>\
 ${pString + firstCloseTag}\
 ${children || ''}`;
 };

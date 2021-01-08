@@ -1,7 +1,7 @@
-const util = require('util');
 const { getAttribs } = require('jsdoc/util/templateHelper');
 const addNonParamAttributes = require('./addNonParamAttributes');
 const buildAttrsString = require('./buildAttrsString');
+const _ = require('lodash');
 
 module.exports = function addSignatureReturns(f) {
   const attribs = [];
@@ -16,22 +16,18 @@ module.exports = function addSignatureReturns(f) {
   if (source) {
     source.forEach((item) => {
       getAttribs(item).forEach((attrib) => {
-        if (attribs.indexOf(attrib) === -1) {
-          attribs.push(attrib);
-        }
+        if (attribs.indexOf(attrib) === -1) attribs.push(attrib);
       });
     });
-
     attribsString = buildAttrsString(attribs);
   }
 
-  if (source) {
-    returnTypes = addNonParamAttributes(source);
-  }
-  if (returnTypes.length) {
-    returnTypesString = util.format(' &rarr; %s{%s}', attribsString, returnTypes.join('|'));
-  }
+  if (source) returnTypes = _.join(addNonParamAttributes(source), '|');
 
-  f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
-        '<span class="type-signature">' + returnTypesString + '</span>';
+  if (returnTypes.length) {
+    returnTypesString = `<i class="fas fa-fw fa-long-arrow-right fa-sm"></i> ${attribsString}${returnTypes}`;
+  }
+  f.signature = `\
+<span class="signature">${f.signature || ''}</span>\
+<span class="type-signature return">${returnTypesString}</span>`;
 };

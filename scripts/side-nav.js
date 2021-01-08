@@ -15,7 +15,7 @@ $().ready(() => {
     if (sectionName) {
       wrapper.append($('<h3/>').text(sectionName));
       const list = $('<ul></ul>');
-      section.find('.members h4.name').each((_i, _el) => {
+      section.find('.members div.name').each((_i, _el) => {
         const navLink = $(_el);
         let name = navLink.find('.code-name')
           .clone().children().remove().end().text().trim();
@@ -28,7 +28,7 @@ $().ready(() => {
       });
       wrapper.append(list);
     } else {
-      section.find('.members h4.name').each((_i, _el) => {
+      section.find('.members div.name').each((_i, _el) => {
         const navLink = $(_el);
         let name = navLink.find('.code-name')
           .clone().children().remove().end().text();

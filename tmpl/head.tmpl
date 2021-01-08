@@ -1,11 +1,9 @@
-<js
-  self = this
-?>
+<x self = this ?>
 <head>
-  <js= betterDocs.trackingCode ?>
+  <x= betterDocs.trackingCode ?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><js= betterDocs.title ?> <js= title ?></title>
+  <title><x= betterDocs.title ?> <x= title ?></title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -14,15 +12,14 @@
   <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type='text/css' rel='stylesheet' href='reset.css'>
+  <link type='text/css' rel="stylesheet" href="styles/font-awesome_all.min.css">
+  <link type='text/css' rel='stylesheet' href='https://cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
   <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" integrity="sha256-WLKGWSIJYerRN8tbNGtXWVYnUM5wMJTXD8eG4NtGcDM=" crossorigin="anonymous">
   <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="<js= betterDocs.css ?>">
+  <!-- <link type="text/css" rel="stylesheet" href="styles/app.min.css"> -->
+  <link type="text/css" rel="stylesheet" href="<x= betterDocs.css ?>">
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-  <js if (betterDocs.head) { ?>
-    <js= betterDocs.head ?>
-  <js } ?>
+  <x if (betterDocs.head) { ?><x= betterDocs.head ?><x } ?>
 </head>

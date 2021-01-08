@@ -2,12 +2,14 @@
   padding: 10px 0;
   text-align: right;
 }
-.bd__button > a{
+
+.bd__button > a {
   font-weight: 100;
   text-decoration: none;
-  color: #BDC3CB;
+  color: rgb(189,195,203);
   font-family: sans-serif;
 }
+
 .bd__button > a:hover {
-  color: #798897;
+  color: rgb(120,135,150);
 }

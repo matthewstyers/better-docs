@@ -1,168 +1,167 @@
-<x
-var data = obj;
-var self = this;
-?>
+<x var data = obj; var self = this; ?>
 <x if (data.type && data.type.names) {?><x= self.partial('name-tags.tmpl', data.type.names) ?><x } ?>
 <x if (data.kind !== 'module' && !data.hideconstructor) { ?>
-    <x if (data.kind !== 'namespace') { ?>
-    <h4 class="name" id="<x= id ?>" data-isnative="<x= data.isNative ?>">
-        <x= self.partial('name-link.tmpl', {id: id}) ?>
-        <x if (data.rawAttribs && data.rawAttribs.length) {?>
-            <x data.rawAttribs.forEach(function(attrib) { ?>
-                <span class='tag'><x= attrib ?></span>
-            <x }); ?>
-        <x } ?>
-        <span class="code-name <x= kind ?>">
-          <x=
-            (kind === 'class' ? 'new ' : '') +
-            <!-- for components, the whole name is the signature -->
-            (kind === 'component' ? '' : name) +
-            (data.signature || '')
-          ?>
-        </span>
-    </h4>
+  <x if (data.kind !== 'namespace') { ?>
+  <div class="name" id="<x= id ?>" data-isnative="<x= data.isNative ?>">
+    <x if (data.rawAttribs && data.rawAttribs.length) {?>
+      <x data.rawAttribs.forEach(function(attrib) { ?>
+        <span class='tag'><x= attrib ?></span>
+      <x }); ?>
     <x } ?>
-
-    <x if (data.summary) { ?>
-    <p class="summary"><x= summary ?></p>
-    <x } ?>
-    <x if (data.description) { ?>
-    <div class="description">
-        <x= data.description ?>
+    <span class="code-name <x= kind ?>">
+      <x=
+      (kind === 'class' ? 'new ' : '') +
+      <!-- for components, the whole name is the signature -->
+      (kind === 'component' ? '' : name) +
+      (data.signature || '')
+      ?>
+    </span>
+    <div class='name-link-wpr'>
+      <x= self.partial('name-link.tmpl', {id: id}) ?>
     </div>
-    <x } ?>
+  </div>
+  <x } ?>
+
+  <x if (data.summary) { ?>
+  <p class="summary"><x= summary ?></p>
+  <x } ?>
+  <x if (data.description) { ?>
+  <div class="description">
+    <x= data.description ?>
+  </div>
+  <x } ?>
 <x } ?>
 
 <x if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Extends:</label></div>
-        <div class="column is-10">
-            <x= self.partial('augments.tmpl', data) ?>
-        </div>
+  <div class="method-parameter columns">
+    <div class="column is-2"><label>Extends:</label></div>
+    <div class="column is-10">
+      <x= self.partial('augments.tmpl', data) ?>
     </div>
+  </div>
 <x } ?>
 
 <x if (data['this']) { ?>
-    <p class="method-parameter">
-        <label>This:</label>
-        <x= this.linkto(data['this'], data['this']) ?>
-    </p>
+  <p class="method-parameter">
+    <label>This:</label>
+    <x= this.linkto(data['this'], data['this']) ?>
+  </p>
 <x } ?>
 
 <x if (data.component) { ?>
-    <x if (data.component.props && data.component.props.length) { ?>
-        <h5>PropTypes:</h5>
-        <x= self.partial('proptypes.tmpl', data.component) ?>
-    <x } ?>
+  <x if (data.component.props && data.component.props.length) { ?>
+    <h5>PropTypes:</h5>
+    <x= self.partial('proptypes.tmpl', data.component) ?>
+  <x } ?>
 <x } ?>
 
 <!-- MOVED TO details.tmpl -->
 <!-- <x if (data.params && params.length && !data.hideconstructor) { ?>
-    <h5>Parameters:</h5>
-    <x= this.partial('params.tmpl', params) ?>
+  <h5>Parameters:</h5>
+  <x= this.partial('params.tmpl', params) ?>
 <x } ?> -->
 
 <x= this.partial('details.tmpl', data) ?>
 
 <x if (data.kind !== 'module' && data.requires && data.requires.length) { ?>
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Requires:</label></div>
-        <div class="column is-10">
-            <ul><x data.requires.forEach(function(r) { ?>
-                <li><x= self.linkto(r) ?></li>
-            <x }); ?></ul>
-        </div>
+  <div class="method-parameter columns">
+    <div class="column is-2"><label>Requires:</label></div>
+    <div class="column is-10">
+      <ul><x data.requires.forEach(function(r) { ?>
+        <li><x= self.linkto(r) ?></li>
+      <x }); ?></ul>
     </div>
+  </div>
 <x } ?>
 
 <x if (data.fires && fires.length) { ?>
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Fires:</label></div>
-        <div class="column is-10">
-            <ul><x fires.forEach(function(f) { ?>
-                <li><x= self.linkto(f) ?></li>
-            <x }); ?></ul>
-        </div>
+  <div class="method-parameter columns">
+    <div class="column is-2"><label>Fires:</label></div>
+    <div class="column is-10">
+      <ul><x fires.forEach(function(f) { ?>
+        <li><x= self.linkto(f) ?></li>
+      <x }); ?></ul>
     </div>
+  </div>
 <x } ?>
 
 
 <x if (data.listens && listens.length) { ?>
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Listens to Events:</label></div>
-        <div class="column is-10">
-            <ul><x listens.forEach(function(f) { ?>
-                <li><x= self.linkto(f) ?></li>
-            <x }); ?></ul>
-        </div>
+  <div class="method-parameter columns">
+    <div class="column is-2"><label>Listens to Events:</label></div>
+    <div class="column is-10">
+      <ul><x listens.forEach(function(f) { ?>
+        <li><x= self.linkto(f) ?></li>
+      <x }); ?></ul>
     </div>
+  </div>
 <x } ?>
 
 
 
 <x if (data.listeners && listeners.length) { ?>
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Listeners of This Event:</label></div>
-        <div class="column is-10">
-            <ul><x listeners.forEach(function(f) { ?>
-                <li><x= self.linkto(f) ?></li>
-            <x }); ?></ul>
-        </div>
+  <div class="method-parameter columns">
+    <div class="column is-2"><label>Listeners of This Event:</label></div>
+    <div class="column is-10">
+      <ul><x listeners.forEach(function(f) { ?>
+        <li><x= self.linkto(f) ?></li>
+      <x }); ?></ul>
     </div>
+  </div>
 <x } ?>
 
 <x if (data.modifies && modifies.length) {?>
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Modifies:</label></div>
-        <div class="column is-10">
-            <x
-                modifies.forEach(function(m) { ?>
-                    <x= self.partial('modifies.tmpl', m) ?>
-                <x });
-            ?>
-        </div>
+  <div class='columns method-parameter'>
+    <div class="column is-2"><label>Modifies:</label></div>
+    <div class="column is-10">
+      <x
+        modifies.forEach(function(m) { ?>
+          <x= self.partial('modifies.tmpl', m) ?>
+        <x });
+      ?>
     </div>
+  </div>
 <x} ?>
 
 <x if (data.exceptions && exceptions.length) { ?>
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Throws:</label></div>
-        <div class="column is-10">
-            <x
-                exceptions.forEach(function(r) { ?>
-                    <x= self.partial('exceptions.tmpl', r) ?>
-                <x });
-            ?>
-        </div>
+  <div class='columns method-parameter'>
+    <div class="column is-2"><label>Throws:</label></div>
+    <div class="column is-10">
+      <x
+        exceptions.forEach(function(r) { ?>
+          <x= self.partial('exceptions.tmpl', r) ?>
+        <x });
+      ?>
     </div>
+  </div>
 <x} ?>
 
 <x if (data.returns && returns.length) { ?>
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            <x
-                returns.forEach(function(r) { ?>
-                    <x= self.partial('returns.tmpl', r) ?>
-                <x });
-            ?>
-        </div>
+  <div class='columns method-parameter'>
+    <div class="column is-2"><label>Returns:</label></div>
+    <div class="column is-10">
+      <x
+        returns.forEach(function(r) { ?>
+          <x= self.partial('returns.tmpl', r) ?>
+        <x });
+      ?>
     </div>
+  </div>
 <x} ?>
 <x if (data.yields && yields.length) { ?>
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Yields:</label></div>
-        <div class="column is-10">
-            <x
-                yields.forEach(function(r) { ?>
-                    <x= self.partial('returns.tmpl', r) ?>
-                <x });
-            ?>
-        </div>
+  <div class='columns method-parameter'>
+    <div class="column is-2"><label>Yields:</label></div>
+    <div class="column is-10">
+      <x
+        yields.forEach(function(r) { ?>
+          <x= self.partial('returns.tmpl', r) ?>
+        <x });
+      ?>
     </div>
+  </div>
 <x} ?>
 
 <x if (data.examples && examples.length) { ?>
-    <h5>Example<x= examples.length > 1? 's':'' ?></h5>
-    <x= this.partial('examples.tmpl', data) ?>
+  <h5>Example<x= examples.length > 1? 's':'' ?></h5>
+  <x= this.partial('examples.tmpl', data) ?>
 <x } ?>
