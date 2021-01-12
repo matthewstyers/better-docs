@@ -25,7 +25,9 @@ module.exports = function addSignatureReturns(f) {
   if (source) returnTypes = _.join(addNonParamAttributes(source), '|');
 
   if (returnTypes.length) {
-    returnTypesString = `<i class="fas fa-fw fa-long-arrow-right fa-sm"></i> ${attribsString}${returnTypes}`;
+    returnTypesString = `\
+<i class="fas fa-fw fa-long-arrow-right punctuation"></i> \
+${attribsString}${returnTypes}`;
   }
   f.signature = `\
 <span class="signature">${f.signature || ''}</span>\
